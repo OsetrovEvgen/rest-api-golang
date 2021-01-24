@@ -3,6 +3,7 @@ package server
 import (
 	"net/http"
 
+	"github.com/go-openapi/runtime/middleware"
 	"github.com/gorilla/mux"
 	"github.com/osetr/rest-api/api/v1/internal/store"
 	"github.com/sirupsen/logrus"
@@ -47,6 +48,11 @@ func (s *APIServer) SetStore(config *store.Config) error {
 // SetRouter ...
 func (s *APIServer) SetRouter() {
 	s.Router = mux.NewRouter()
+
+	opts := middleware.SwaggerUIOpts{SpecURL: "/swagger.yaml"}
+	sh := middleware.SwaggerUI(opts, nil)
+	s.Router.Handle("/docs", sh)
+	s.Router.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
 
 	s.Router.HandleFunc("/api/v1/projects", s.createProject()).Methods("POST")
 	s.Router.HandleFunc("/api/v1/projects", s.getProjects()).Methods("GET")
