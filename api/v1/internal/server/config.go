@@ -3,7 +3,6 @@ package server
 import (
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -23,12 +22,7 @@ func NewConfig() *Config {
 	level, _ := logrus.ParseLevel("debug")
 	resConfig.Logger.SetLevel(level)
 
-	// trying to find .env file
-	if godotenv.Load() != nil {
-		logrus.Info("trying to start default config for apiserver")
-		return resConfig
-	}
-	logrus.Info("trying to start custom config(.env) for apiserver")
+	logrus.Info("trying to start custom config for apiserver")
 
 	// trying to get key LOG_LEVEL
 	ll := os.Getenv("LOG_LEVEL")

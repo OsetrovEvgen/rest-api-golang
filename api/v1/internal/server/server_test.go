@@ -22,6 +22,7 @@ func TestMain(m *testing.M) {
 	if err := s.SetStore(sconf); err != nil {
 		logrus.Fatal(err)
 	}
+
 	s.SetRouter()
 	s.Store.InitTestData()
 

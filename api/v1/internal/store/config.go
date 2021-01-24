@@ -3,7 +3,6 @@ package store
 import (
 	"os"
 
-	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -26,11 +25,7 @@ func NewConfig() *Config {
 		DBMode:     "disable",
 	}
 
-	if godotenv.Load() != nil {
-		logrus.Info("using default config for database")
-		return resConfig
-	}
-	logrus.Info("using custom config for database")
+	logrus.Info("trying to start custom config for database")
 
 	dbu := os.Getenv("DB_USER")
 	if dbu != "" {
