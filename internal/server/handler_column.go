@@ -359,17 +359,22 @@ func (s *APIServer) rightColumn() http.HandlerFunc {
 		if err := s.Store.DB.QueryRow(
 			`WITH
 				curcol AS 
-					(SELECT * FROM columns WHERE id = $1)
+					(SELECT * FROM columns WHERE id = $1),
+				curcols AS
+					(
+					SELECT * FROM columns WHERE
+						project_id = (SELECT project_id FROM curcol)
+					)
 
 			UPDATE columns
 			SET position = 
 					CASE
 						WHEN position = (SELECT position FROM curcol) + 1 THEN position - 1
 						WHEN 
-							id = $1
+							(id = $1
 						AND
 							position !=
-								(SELECT MAX(position) FROM columns)
+								(SELECT MAX(position) FROM curcols))
 						THEN position + 1
 						ELSE position
 					END
@@ -383,10 +388,10 @@ func (s *APIServer) rightColumn() http.HandlerFunc {
 						position = (SELECT position FROM curcol)
 					)
 				)
-			RETURNING (SELECT position FROM curcol), (SELECT MAX(position) FROM columns)`,
+			RETURNING (SELECT position FROM curcol), (SELECT MAX(position) FROM curcols)`,
 			params["id"],
 		).Scan(&position, &maxPosition); err != nil {
-			s.errorresp(w, r, http.StatusNotFound, errors.New("column not found"))
+			s.errorresp(w, r, http.StatusNotFound, err)
 			return
 		}
 		if position == maxPosition {
