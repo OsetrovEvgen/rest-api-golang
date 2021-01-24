@@ -44,6 +44,39 @@ func (s *Store) Open() error {
 	return nil
 }
 
+// InitTestData ...
+func (s *Store) InitTestData() error {
+	if _, err := s.DB.Exec(
+		`INSERT INTO projects (id, name, description)
+			VALUES ('def_id', 'def_name', 'def_description')`,
+	); err != nil {
+		logrus.Fatal(err)
+	}
+
+	if _, err := s.DB.Exec(
+		`INSERT INTO columns (id, project_id, name, position)
+			VALUES ('def_id', 'def_id', 'def_name', 0)`,
+	); err != nil {
+		logrus.Fatal(err)
+	}
+
+	if _, err := s.DB.Exec(
+		`INSERT INTO tasks (id, column_id, name, description)
+			VALUES ('def_id', 'def_id', 'def_name', 'def_description')`,
+	); err != nil {
+		logrus.Fatal(err)
+	}
+
+	if _, err := s.DB.Exec(
+		`INSERT INTO comments (id, task_id, text)
+			VALUES ('def_id', 'def_id', 'def_text')`,
+	); err != nil {
+		logrus.Fatal(err)
+	}
+
+	return nil
+}
+
 // Close ...
 func (s *Store) Close() {
 	s.DB.Close()
