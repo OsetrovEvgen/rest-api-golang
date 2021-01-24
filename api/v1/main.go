@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/osetr/rest-api/internal/server"
-	"github.com/osetr/rest-api/internal/store"
+	"github.com/osetr/rest-api/api/v1/internal/server"
+	"github.com/osetr/rest-api/api/v1/internal/store"
 	"github.com/sirupsen/logrus"
 )
 

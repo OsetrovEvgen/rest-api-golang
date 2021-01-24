@@ -9,8 +9,8 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 	"github.com/sirupsen/logrus"
 
-	"github.com/osetr/rest-api/internal/server"
-	"github.com/osetr/rest-api/internal/store"
+	"github.com/osetr/rest-api/api/v1/internal/server"
+	"github.com/osetr/rest-api/api/v1/internal/store"
 )
 
 var s *server.APIServer

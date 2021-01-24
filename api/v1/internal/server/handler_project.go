@@ -8,7 +8,7 @@ import (
 	"strconv"
 
 	"github.com/gorilla/mux"
-	"github.com/osetr/rest-api/internal/model"
+	"github.com/osetr/rest-api/api/v1/internal/model"
 )
 
 // Add new project

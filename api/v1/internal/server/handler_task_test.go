@@ -10,7 +10,6 @@ func TestCreateTask(t *testing.T) {
 	var jsonStr = []byte(`{"column_id":"def_id", "name":"test_name", "description":"test_description"}`)
 	req, _ := http.NewRequest("POST", "/api/v1/tasks", bytes.NewBuffer(jsonStr))
 	req.Header.Set("Content-Type", "application/json")
-
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusCreated, response.Code)
 }
@@ -18,7 +17,6 @@ func TestCreateTask(t *testing.T) {
 func TestGetTask(t *testing.T) {
 	req, _ := http.NewRequest("GET", "/api/v1/tasks/def_id", nil)
 	response := executeRequest(req)
-
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
 
@@ -26,7 +24,6 @@ func TestPatchTask(t *testing.T) {
 	var jsonStr = []byte(`{"description":"non_def_name"}`)
 	req, _ := http.NewRequest("PATCH", "/api/v1/tasks/def_id", bytes.NewBuffer(jsonStr))
 	req.Header.Set("Content-Type", "application/json")
-
 	response := executeRequest(req)
 	checkResponseCode(t, http.StatusOK, response.Code)
 }
