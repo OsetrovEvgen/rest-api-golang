@@ -29,6 +29,8 @@ func TestMain(m *testing.M) {
 
 	s.Store.DB.Exec("DELETE FROM projects")
 	s.Store.DB.Exec("DELETE FROM columns")
+	s.Store.DB.Exec("DELETE FROM tasks")
+	s.Store.DB.Exec("DELETE FROM comments")
 	os.Exit(code)
 }
 

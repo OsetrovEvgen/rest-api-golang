@@ -325,7 +325,12 @@ func (s *APIServer) downTask() http.HandlerFunc {
 		if err := s.Store.DB.QueryRow(
 			`WITH
 				curtask AS 
-					(SELECT * FROM tasks WHERE id = $1)
+					(SELECT * FROM tasks WHERE id = $1),
+				curtasks AS 
+					(
+						SELECT * FROM tasks WHERE
+							column_id = (SELECT column_id FROM curtask)
+					)
 
 			UPDATE tasks
 			SET position = 
@@ -335,13 +340,13 @@ func (s *APIServer) downTask() http.HandlerFunc {
 						id = $1
 					AND
 						position !=
-							(SELECT MAX(position) FROM tasks)
+							(SELECT MAX(position) FROM curtasks)
 					THEN position + 1
 					ELSE position
 				END
 			WHERE
 				(
-					project_id = (SELECT project_id FROM curtask)
+					column_id = (SELECT column_id FROM curtask)
 				AND
 					(
 						position = (SELECT position FROM curtask) + 1
@@ -349,7 +354,7 @@ func (s *APIServer) downTask() http.HandlerFunc {
 						position = (SELECT position FROM curtask)
 					)
 				)
-			RETURNING (SELECT position FROM curtask), (SELECT MAX(position) FROM tasks)`,
+			RETURNING (SELECT position FROM curtask), (SELECT MAX(position) FROM curtasks)`,
 			params["id"],
 		).Scan(&position, &maxPosition); err != nil {
 			s.errorresp(w, r, http.StatusNotFound, errors.New("task not found"))

@@ -61,8 +61,8 @@ func (s *Store) InitTestData() error {
 	}
 
 	if _, err := s.DB.Exec(
-		`INSERT INTO tasks (id, column_id, name, description)
-			VALUES ('def_id', 'def_id', 'def_name', 'def_description')`,
+		`INSERT INTO tasks (id, column_id, name, description, position)
+			VALUES ('def_id', 'def_id', 'def_name', 'def_description', 0)`,
 	); err != nil {
 		logrus.Fatal(err)
 	}
