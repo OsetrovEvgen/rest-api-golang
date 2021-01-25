@@ -1,11 +1,783 @@
-openapi: 3.0.0
+swagger: "2.0"
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
-  version: 0.1.9
+  description: "This is a little api, designed with golang"
+  version: "1.0.0"
+  title: "FAKETRELLO"
+host: "faketrello.ml/api"
+basePath: "/v1"
+schemes:
+- "https"
+- "http"
+paths:
 
-servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
+# ///////////////////////////////////// PROJECT
+  /projects:
+
+    post:
+      tags:
+      - "project"
+      summary: "Create a new project"
+      description: ""
+      operationId: "addProject"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+
+    get:
+      tags:
+      - "project"
+      summary: "Get all projects"
+      operationId: "findProjectsByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "page_size"
+        in: "query"
+        description: "Page size for pagination"
+        required: false
+        type: "integer"
+      - name: "page"
+        in: "query"
+        description: "Order of required page in pagination"
+        required: false
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+
+  /projects/{projectId}:
+
+    get:
+      tags:
+      - "project"
+      summary: "Find project by ID"
+      description: "Returns a single project"
+      operationId: "getProjectById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "Project not found"
+
+    put:
+      tags:
+      - "project"
+      summary: "Update a project with special ID"
+      description: ""
+      operationId: "updateProject"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Project not found"
+
+    patch:
+      tags:
+      - "project"
+      summary: "Patch a project with special ID"
+      description: ""
+      operationId: "patchProject"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "ID of project that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Project object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Project"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Project not found"
+
+    delete:
+      tags:
+      - "project"
+      summary: "Delete a project"
+      description: ""
+      operationId: "deleteProject"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "projectId"
+        in: "path"
+        description: "Project id to delete"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "No content"
+        "404":
+          description: "Project not found"
+
+# ///////////////////////////////////// COLUMN
+
+  /columns:
+
+    post:
+      tags:
+      - "column"
+      summary: "Create a new column"
+      description: ""
+      operationId: "addColumn"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Column object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Column"
+      responses:
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+
+    get:
+      tags:
+      - "column"
+      summary: "Get all columns"
+      operationId: "findColumnsByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "page_size"
+        in: "query"
+        description: "Page size for pagination"
+        required: false
+        type: "integer"
+      - name: "page"
+        in: "query"
+        description: "Order of required page in pagination"
+        required: false
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+
+  /columns/{columnId}:
+
+    get:
+      tags:
+      - "column"
+      summary: "Find column by ID"
+      description: "Returns a single column"
+      operationId: "getColumnById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "columnId"
+        in: "path"
+        description: "ID of column to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "Column not found"
+
+    patch:
+      tags:
+      - "column"
+      summary: "Patch a column with special ID"
+      description: ""
+      operationId: "patchColumn"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "columnId"
+        in: "path"
+        description: "ID of column that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Column object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/ColumnPatch"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Column not found"
+
+    delete:
+      tags:
+      - "column"
+      summary: "Delete a column"
+      description: ""
+      operationId: "deleteColumn"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "columnId"
+        in: "path"
+        description: "Column id to delete"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "No content"
+        "404":
+          description: "Column not found"
+
+  /columns/{columnId}/left:
+    post:
+      tags:
+      - "column"
+      summary: "Move column to the left"
+      description: ""
+      operationId: "leftColumn"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "columnId"
+        in: "path"
+        description: "Column id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request" 
+        "404":
+          description: "Column not found"
+
+  /columns/{columnId}/right:
+    post:
+      tags:
+      - "column"
+      summary: "Move column to the right"
+      description: ""
+      operationId: "rightColumn"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "columnId"
+        in: "path"
+        description: "Column id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request"  
+        "404":
+          description: "Column not found"
+
+# ///////////////////////////////////// TASK
+
+  /tasks:
+
+    post:
+      tags:
+      - "task"
+      summary: "Create a new task"
+      description: ""
+      operationId: "addTask"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Task object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Task"
+      responses:
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+
+    get:
+      tags:
+      - "task"
+      summary: "Get all tasks"
+      operationId: "findTasksByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "page_size"
+        in: "query"
+        description: "Page size for pagination"
+        required: false
+        type: "integer"
+      - name: "page"
+        in: "query"
+        description: "Order of required page in pagination"
+        required: false
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+
+  /tasks/{taskId}:
+
+    get:
+      tags:
+      - "task"
+      summary: "Find task by ID"
+      description: "Returns a single task"
+      operationId: "getTaskById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "ID of task to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "Task not found"
+
+    patch:
+      tags:
+      - "task"
+      summary: "Patch a task with special ID"
+      description: ""
+      operationId: "patchTask"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "ID of task that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Task object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/TaskPatch"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Task not found"
+
+    delete:
+      tags:
+      - "task"
+      summary: "Delete a task"
+      description: ""
+      operationId: "deleteTask"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "Task id to delete"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "No content"
+        "404":
+          description: "Task not found"
+
+  /tasks/{taskId}/left:
+    post:
+      tags:
+      - "task"
+      summary: "Move task to the left"
+      description: ""
+      operationId: "leftTask"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "Task id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request" 
+        "404":
+          description: "Task not found"
+
+  /tasks/{taskId}/right:
+    post:
+      tags:
+      - "task"
+      summary: "Move task to the right"
+      description: ""
+      operationId: "rightTask"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "Task id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request"  
+        "404":
+          description: "Task not found"
+
+  /tasks/{taskId}/up:
+    post:
+      tags:
+      - "task"
+      summary: "Move task to the up"
+      description: ""
+      operationId: "upTask"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "Task id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request"  
+        "404":
+          description: "Task not found"
+
+  /tasks/{taskId}/down:
+    post:
+      tags:
+      - "task"
+      summary: "Move task to the down"
+      description: ""
+      operationId: "downTask"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "taskId"
+        in: "path"
+        description: "Task id to move"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "Successfully moved"
+        "400":
+          description: "Bad request"  
+        "404":
+          description: "Task not found"
+
+# ///////////////////////////////////// COMMENT
+
+  /comments:
+
+    post:
+      tags:
+      - "comment"
+      summary: "Create a new comment"
+      description: ""
+      operationId: "Comment"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Comment object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/Comment"
+      responses:
+        "201":
+          description: "Created"
+        "400":
+          description: "Bad Request"
+
+    get:
+      tags:
+      - "comment"
+      summary: "Get all comments"
+      operationId: "CommentsByStatus"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "page_size"
+        in: "query"
+        description: "Page size for pagination"
+        required: false
+        type: "integer"
+      - name: "page"
+        in: "query"
+        description: "Order of required page in pagination"
+        required: false
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+
+  /comments/{commentId}:
+
+    get:
+      tags:
+      - "comment"
+      summary: "Find comment by ID"
+      description: "Returns a single comment"
+      operationId: "CommentById"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "commentId"
+        in: "path"
+        description: "ID of comment to return"
+        required: true
+        type: "string"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "Comment not found"
+
+    patch:
+      tags:
+      - "comment"
+      summary: "Patch a comment with special ID"
+      description: ""
+      operationId: "Comment"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "commentId"
+        in: "path"
+        description: "ID of comment that needs to be updated"
+        required: true
+        type: "string"
+      - in: "body"
+        name: "body"
+        description: "Comment object that needs to be added to the store"
+        required: true
+        schema:
+          $ref: "#/definitions/CommentPatch"
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "Bad Request"
+        "404":
+          description: "Comment not found"
+
+    delete:
+      tags:
+      - "comment"
+      summary: "Delete a comment"
+      description: ""
+      operationId: "Comment"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "commentId"
+        in: "path"
+        description: "Comment id to delete"
+        required: true
+        type: "string"
+      responses:
+        "204":
+          description: "No content"
+        "404":
+          description: "Comment not found"
+
+
+definitions:
+  Project:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "some name"
+      description:
+        type: "string"
+        example: "some description"
+    xml:
+      name: "Project"
+  Column:
+    type: "object"
+    properties:
+      project_id:
+        type: "string"
+        example: "project id"
+      name:
+        type: "string"
+        example: "some name"
+    xml:
+      name: "Column"
+  ColumnPatch:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "some name"
+    xml:
+      name: "Column"
+  Task:
+    type: "object"
+    properties:
+      column_id:
+        type: "string"
+        example: "column id"
+      name:
+        type: "string"
+        example: "some name"
+      description:
+        type: "string"
+        example: "some description"
+    xml:
+      name: "Task"
+  TaskPatch:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "some name"
+      description:
+        type: "string"
+        example: "some description"
+    xml:
+      name: "Task"
+  Comment:
+    type: "object"
+    properties:
+      task_id:
+        type: "string"
+        example: "task id"
+      description:
+        type: "string"
+        example: "some text"
+    xml:
+      name: "Comment"
+  CommentPatch:
+    type: "object"
+    properties:
+      text:
+        type: "string"
+        example: "some text"
+    xml:
+      name: "Comment"
