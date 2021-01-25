@@ -18,7 +18,15 @@ var s *server.APIServer
 func TestMain(m *testing.M) {
 	s = server.NewAPIServer(server.NewConfig())
 	sconf := store.NewConfig()
-	sconf.DBName = "restapi_test"
+
+	dbn := os.Getenv("DB_NAME_TEST")
+	if dbn != "" {
+		sconf.DBName = dbn
+	} else {
+		logrus.Warn("key DB_NAME not found. Setting default value restapi_test")
+		sconf.DBName = "restapi_test"
+	}
+
 	if err := s.SetStore(sconf); err != nil {
 		logrus.Fatal(err)
 	}
