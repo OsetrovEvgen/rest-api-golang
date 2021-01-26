@@ -52,7 +52,7 @@ func (s *APIServer) SetRouter() {
 	opts := middleware.SwaggerUIOpts{SpecURL: "/swagger.yaml"}
 	sh := middleware.SwaggerUI(opts, nil)
 	s.Router.Handle("/docs", sh)
-	s.Router.Handle("/swagger.yaml", http.FileServer(http.Dir("./")))
+	s.Router.Handle("/swagger.yaml", http.FileServer(http.Dir("./api/v1/internal/server/")))
 
 	s.Router.HandleFunc("/api/v1/projects", s.createProject()).Methods("POST")
 	s.Router.HandleFunc("/api/v1/projects", s.getProjects()).Methods("GET")
